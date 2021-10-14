@@ -1,39 +1,78 @@
 import 'package:flutter/material.dart';
 
-class Input {
+class Numbers {
   String firstNumber;
   String secondNumber;
   bool operator;
+  String operatorAction;
+  double result;
 
-  Input({this.firstNumber = '', this.operator = false, this.secondNumber = ''});
+  Numbers({
+    this.firstNumber = '',
+    this.operator = false,
+    this.secondNumber = '',
+    this.operatorAction = '',
+    this.result = 0,
+  });
+
+  void resultClicked() {
+    switch (operatorAction) {
+      case '+':
+        result = double.parse(firstNumber) + double.parse(secondNumber);
+        print('sum is : $result');
+        break;
+      case '-':
+        result = double.parse(firstNumber) - double.parse(secondNumber);
+        print('sub is : $result');
+        break;
+      case '×':
+        result = double.parse(firstNumber) * double.parse(secondNumber);
+        print('result is : $result');
+        break;
+      case '÷':
+        result = double.parse(firstNumber) / double.parse(secondNumber);
+        print('result is : $result');
+        break;
+    }
+  }
 
   void toggleoperator() {
     operator = true;
     print('primary operator is clicked');
   }
 
+  void getAction(action) {
+    operatorAction = action;
+  }
+
   String setNumber(number) {
     if (operator == false) {
-      firstNumber += number.toString();
+      firstNumber += number;
       print('firstNumber is: $firstNumber');
-      return firstNumber;
+      return firstNumber.toString();
     } else if (operator == true) {
-      secondNumber += number.toString();
+      secondNumber += number;
       print('secondNumber is: $secondNumber');
-      return secondNumber;
+      return secondNumber.toString();
+    } else {
+      return 'Error';
     }
-    return 'Error';
   }
 }
 
 class Math extends ChangeNotifier {
-  Input input = Input();
+  Numbers numbers = Numbers();
 
   String getNumber(number) {
-    return input.setNumber(number);
+    return numbers.setNumber(number);
   }
 
-  void isOperatorClicked() {
-    input.toggleoperator();
+  void operatorClicked(action) {
+    numbers.toggleoperator();
+    numbers.getAction(action);
+  }
+
+  void calculate() {
+    numbers.resultClicked();
   }
 }

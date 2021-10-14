@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_calculator/math.dart';
 import 'package:provider/provider.dart';
 import 'buttons.dart';
-import 'imgbot.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(

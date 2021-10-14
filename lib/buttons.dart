@@ -8,13 +8,17 @@ class ButtonsPad extends StatefulWidget {
 }
 
 class _ButtonsPadState extends State<ButtonsPad> {
+
   void numberCallback(number) {
     Provider.of<Math>(context, listen: false).getNumber(number);
   }
 
-  void actionCallback() {
-    Provider.of<Math>(context, listen: false).isOperatorClicked();
-    //todo: a method that switches between actions
+  void actionCallback(action) {
+    Provider.of<Math>(context, listen: false).operatorClicked(action);
+  }
+
+  void resultCallback(){
+    Provider.of<Math>(context, listen: false).calculate();
   }
 
   @override
@@ -38,27 +42,27 @@ class _ButtonsPadState extends State<ButtonsPad> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                NumberButton(7, numberCallback),
-                NumberButton(8, numberCallback),
-                NumberButton(9, numberCallback),
+                NumberButton('7', numberCallback),
+                NumberButton('8', numberCallback),
+                NumberButton('9', numberCallback),
                 PrimaryAction('×', actionCallback),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                NumberButton(4, numberCallback),
-                NumberButton(5, numberCallback),
-                NumberButton(6, numberCallback),
+                NumberButton('4', numberCallback),
+                NumberButton('5', numberCallback),
+                NumberButton('6', numberCallback),
                 PrimaryAction('-', actionCallback),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                NumberButton(1, numberCallback),
-                NumberButton(2, numberCallback),
-                NumberButton(3, numberCallback),
+                NumberButton('1', numberCallback),
+                NumberButton('2', numberCallback),
+                NumberButton('3', numberCallback),
                 PrimaryAction('+', actionCallback),
               ],
             ),
@@ -66,9 +70,9 @@ class _ButtonsPadState extends State<ButtonsPad> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 BackSpaceButton(),
-                NumberButton(0, numberCallback),
+                NumberButton('0', numberCallback),
                 Action2ndButton('.'),
-                ResultButton('='),
+                ResultButton('=', resultCallback),
                 // _actionButton('='),
               ],
             ),
@@ -80,7 +84,7 @@ class _ButtonsPadState extends State<ButtonsPad> {
 }
 
 class NumberButton extends StatefulWidget {
-  final int number;
+  final String number;
   final Function voidCallback;
 
   const NumberButton(this.number, this.voidCallback);
@@ -88,7 +92,6 @@ class NumberButton extends StatefulWidget {
   @override
   State<NumberButton> createState() => _NumberButtonState();
 }
-// bool flag;
 
 class _NumberButtonState extends State<NumberButton> {
   @override
@@ -110,7 +113,7 @@ class _NumberButtonState extends State<NumberButton> {
           widget.voidCallback(widget.number);
         },
         child: Text(
-          widget.number.toStringAsFixed(0),
+          widget.number,
           style: TextStyle(
             color: Colors.white,
             fontSize: 35,
@@ -124,14 +127,13 @@ class _NumberButtonState extends State<NumberButton> {
 
 class PrimaryAction extends StatefulWidget {
   final String action;
-  final Function actionCallback;
+  final Function voidCallback;
 
-  const PrimaryAction(this.action, this.actionCallback);
+  const PrimaryAction(this.action, this.voidCallback);
 
   @override
   State<PrimaryAction> createState() => _PrimaryActionState();
 }
-bool flagAction = true;
 
 class _PrimaryActionState extends State<PrimaryAction> {
   @override
@@ -149,7 +151,7 @@ class _PrimaryActionState extends State<PrimaryAction> {
           ),
         ),
         onPressed: () {
-          widget.actionCallback();
+          widget.voidCallback(widget.action);
         },
         child: Text(
           widget.action,
@@ -197,11 +199,17 @@ class Action2ndButton extends StatelessWidget {
   }
 }
 
-class ResultButton extends StatelessWidget {
-  final String action;
+class ResultButton extends StatefulWidget {
+  final String click;
+  final Function voidCallback;
 
-  const ResultButton(this.action);
+  const ResultButton(this.click, this.voidCallback);
 
+  @override
+  State<ResultButton> createState() => _ResultButtonState();
+}
+
+class _ResultButtonState extends State<ResultButton> {
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.height * 0.1;
@@ -216,9 +224,11 @@ class ResultButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(50),
           ),
         ),
-        onPressed: () {},
+        onPressed: () {
+          widget.voidCallback();
+        },
         child: Text(
-          action,
+          widget.click,
           style: TextStyle(
             color: Colors.white,
             fontSize: 35,
