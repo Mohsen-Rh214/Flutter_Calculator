@@ -1,38 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class Math extends ChangeNotifier{
-  double a = 0;
-  double b = 0;
-  double c = 0;
-  double result = 0;
+class Input {
+  String firstNumber;
+  String secondNumber;
+  bool operator;
 
-  void add() {
-    result = a + b;
-    notifyListeners();
+  Input({this.firstNumber = '', this.operator = false, this.secondNumber = ''});
+
+  void toggleoperator() {
+    operator = true;
+    print('primary operator is clicked');
   }
 
-  void subtract() {
-    result = a - b;
-    notifyListeners();
-  }
-
-  void multiple() {
-    result = a * b;
-    notifyListeners();
-  }
-
-  void divide() {
-    result = a / b;
-    notifyListeners();
-  }
-  double get showOnScreen {
-    if(a!=0) {
-      a = result;
-    } else {
-      b = result;
+  String setNumber(number) {
+    if (operator == false) {
+      firstNumber += number.toString();
+      print('firstNumber is: $firstNumber');
+      return firstNumber;
+    } else if (operator == true) {
+      secondNumber += number.toString();
+      print('secondNumber is: $secondNumber');
+      return secondNumber;
     }
-    return result;
-    notifyListeners();
+    return 'Error';
+  }
+}
+
+class Math extends ChangeNotifier {
+  Input input = Input();
+
+  String getNumber(number) {
+    return input.setNumber(number);
+  }
+
+  void isOperatorClicked() {
+    input.toggleoperator();
   }
 }

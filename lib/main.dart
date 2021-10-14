@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_calculator/math.dart';
 import 'package:provider/provider.dart';
 import 'buttons.dart';
+import 'imgbot.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -45,7 +46,7 @@ class ResultsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var result = Provider.of<Math>(context).result.toStringAsFixed(0);
+    // var result = Provider.of<Math>(context).result.toStringAsFixed(0);
     return Expanded(
       flex: 3,
       child: Container(
@@ -61,7 +62,7 @@ class ResultsScreen extends StatelessWidget {
           ),
         ),
         child: Text(
-          result,
+          'result',
           style: TextStyle(
             color: Colors.white,
             fontSize: 90,
