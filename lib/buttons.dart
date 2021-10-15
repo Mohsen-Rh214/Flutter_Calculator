@@ -11,14 +11,16 @@ class _ButtonsPadState extends State<ButtonsPad> {
 
   void numberCallback(number) {
     Provider.of<Math>(context, listen: false).getNumber(number);
+    Provider.of<Math>(context, listen: false).clicked();
   }
 
   void actionCallback(action) {
     Provider.of<Math>(context, listen: false).operatorClicked(action);
+    Provider.of<Math>(context, listen: false).clicked();
   }
 
-  void resultCallback(){
-    Provider.of<Math>(context, listen: false).calculate();
+  void resultCallback() {
+    Provider.of<Math>(context, listen: false).resultIsClicked();
   }
 
   @override
@@ -33,9 +35,9 @@ class _ButtonsPadState extends State<ButtonsPad> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Action2ndButton('C'),
-                Action2ndButton('%'),
-                Action2ndButton('^'),
+                SecondaryAction('C', actionCallback),
+                SecondaryAction('%', actionCallback),
+                SecondaryAction('^', actionCallback),
                 PrimaryAction('÷', actionCallback),
               ],
             ),
@@ -71,7 +73,7 @@ class _ButtonsPadState extends State<ButtonsPad> {
               children: [
                 BackSpaceButton(),
                 NumberButton('0', numberCallback),
-                Action2ndButton('.'),
+                NumberButton('.', numberCallback),
                 ResultButton('=', resultCallback),
                 // _actionButton('='),
               ],
@@ -97,7 +99,10 @@ class _NumberButtonState extends State<NumberButton> {
   @override
   Widget build(BuildContext context) {
     var a = widget.number;
-    double size = MediaQuery.of(context).size.height * 0.1;
+    double size = MediaQuery
+        .of(context)
+        .size
+        .height * 0.1;
     return Container(
       margin: EdgeInsets.all(5),
       height: 71,
@@ -138,7 +143,10 @@ class PrimaryAction extends StatefulWidget {
 class _PrimaryActionState extends State<PrimaryAction> {
   @override
   Widget build(BuildContext context) {
-    double size = MediaQuery.of(context).size.height * 0.1;
+    double size = MediaQuery
+        .of(context)
+        .size
+        .height * 0.1;
     return Container(
       margin: EdgeInsets.all(5),
       height: 71,
@@ -166,14 +174,21 @@ class _PrimaryActionState extends State<PrimaryAction> {
   }
 }
 
-class Action2ndButton extends StatelessWidget {
+class SecondaryAction extends StatefulWidget {
   final String action;
+  final Function voidCallback;
 
-  const Action2ndButton(this.action);
+  const SecondaryAction(this.action, this.voidCallback);
+
+  @override
+  State<SecondaryAction> createState() => _SecondaryActionState();
+}
+
+class _SecondaryActionState extends State<SecondaryAction> {
 
   @override
   Widget build(BuildContext context) {
-    double size = MediaQuery.of(context).size.height * 0.1;
+
     return Container(
       margin: EdgeInsets.all(5),
       height: 71,
@@ -185,16 +200,18 @@ class Action2ndButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(50),
           ),
         ),
-        onPressed: () {},
+        onPressed: () {
+          widget.voidCallback(widget.action);
+        },
         child: Text(
-          action,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 35,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
+        widget.action,
+        style: TextStyle(
+      color: Colors.white,
+      fontSize: 35,
+        fontWeight: FontWeight.w400,
       ),
+    ),)
+    ,
     );
   }
 }
@@ -212,7 +229,10 @@ class ResultButton extends StatefulWidget {
 class _ResultButtonState extends State<ResultButton> {
   @override
   Widget build(BuildContext context) {
-    double size = MediaQuery.of(context).size.height * 0.1;
+    double size = MediaQuery
+        .of(context)
+        .size
+        .height * 0.1;
     return Container(
       margin: EdgeInsets.all(5),
       height: 71,

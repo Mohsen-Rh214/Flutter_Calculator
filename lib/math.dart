@@ -15,7 +15,8 @@ class Numbers {
     this.result = 0,
   });
 
-  void resultClicked() {
+  void operatorIsClicked(operator) {
+    operator = true;
     switch (operatorAction) {
       case '+':
         result = double.parse(firstNumber) + double.parse(secondNumber);
@@ -31,6 +32,20 @@ class Numbers {
         break;
       case '÷':
         result = double.parse(firstNumber) / double.parse(secondNumber);
+        print('result is : $result');
+        break;
+      case '%':
+        result = double.parse(firstNumber) % double.parse(secondNumber);
+        print('result is : $result');
+        break;
+      // case '^':
+      //   result = double.parse(firstNumber) ^ double.parse(secondNumber);
+      //   print('result is : $result');
+      //   break;
+      case 'C':
+        result = 0;
+        firstNumber = '0';
+        secondNumber = '0';
         print('result is : $result');
         break;
     }
@@ -61,7 +76,11 @@ class Numbers {
 }
 
 class Math extends ChangeNotifier {
+  String result = '0';
+  String operatorAction = '';
   Numbers numbers = Numbers();
+  bool isOperatorClicked = false;
+  bool calculated = false;
 
   String getNumber(number) {
     return numbers.setNumber(number);
@@ -70,9 +89,25 @@ class Math extends ChangeNotifier {
   void operatorClicked(action) {
     numbers.toggleoperator();
     numbers.getAction(action);
+    isOperatorClicked = true;
+    operatorAction = numbers.operatorAction;
+    notifyListeners();
   }
 
-  void calculate() {
-    numbers.resultClicked();
+  void clicked() {
+    if (isOperatorClicked == false && calculated == false) {
+      result = numbers.firstNumber;
+    } else if (isOperatorClicked == true && calculated == false) {
+      result = numbers.secondNumber;
+    }
+    notifyListeners();
+  }
+
+  void resultIsClicked() {
+    numbers.operatorIsClicked(isOperatorClicked);
+    if (isOperatorClicked == true) {
+      result = numbers.result.toStringAsFixed(0);
+      notifyListeners();
+    }
   }
 }
