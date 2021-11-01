@@ -38,16 +38,15 @@ class Numbers {
         result = double.parse(firstNumber) % double.parse(secondNumber);
         print('result is : $result');
         break;
+      case 'C':
+        result = double.parse(firstNumber) + double.parse(secondNumber) * 0;
+        print('result is : $result');
+        break;
       // case '^':
       //   result = double.parse(firstNumber) ^ double.parse(secondNumber);
       //   print('result is : $result');
       //   break;
-      case 'C':
-        result = 0;
-        firstNumber = '0';
-        secondNumber = '0';
-        print('result is : $result');
-        break;
+
     }
   }
 

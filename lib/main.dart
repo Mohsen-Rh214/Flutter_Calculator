@@ -33,7 +33,6 @@ class Calculator extends StatelessWidget {
         child: Scaffold(
           backgroundColor: Color(0xFF000000),
           body: Column(children: <Widget>[
-
             ResultsScreen(),
             ButtonsPad(),
           ]),
